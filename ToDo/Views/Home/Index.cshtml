@@ -1,0 +1,45 @@
+@model IEnumerable<Item>
+
+
+<h1>Hello! There is something to do...</h1>
+@if (TempData.ContainsKey("Message"))
+{
+    <p class="note note-primary text-dark">
+        <strong>Note info: </strong>@TempData["Message"]
+    </p>
+}
+<a asp-controller="Item" asp-action="Create" class="btn btn-primary">Create</a>
+
+<div id="headingOne" style="margin-top:2%; border-radius: 1rem; background-color: rgba(70, 70, 74, 0.92);">
+    <h2>
+        <button class="btn text-white text-start collapsed" type="button" data-mdb-toggle="collapse"
+            data-mdb-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+            <h3>Incomming Items</h3>
+        </button>
+    </h2>
+</div>
+<div id="collapseOne" class="collapse ps-3" aria-labelledby="headingOne" data-mdb-parent="#accordionExample">
+    <div class="row gx-5 justify-content-start">
+        @foreach (var item in Model.Where(i => i.Deadline >= DateTime.Now).OrderBy(i => i.Deadline))
+        {
+            <partial name="_TodoItemCard" model="item" />
+        }
+    </div>
+</div>
+
+<div id="headingTwo" style="margin-top:2%; border-radius: 1rem; background-color: rgba(70, 70, 74, 0.92);">
+    <h2>
+        <button class="btn text-white text-start collapsed" type="button" data-mdb-toggle="collapse"
+            data-mdb-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            <h3>Outdated Items</h3>
+        </button>
+    </h2>
+</div>
+<div id="collapseTwo" class="collapse ps-3" aria-labelledby="headingTwo" data-mdb-parent="#accordionExample">
+    <div class="row gx-5 justify-content-start">
+        @foreach (var item in Model.Where(i => i.Deadline < DateTime.Now).OrderBy(i => i.Deadline))
+        {
+            <partial name="_TodoItemCard" model="item" />
+        }
+    </div>
+</div>

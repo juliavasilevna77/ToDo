@@ -1,0 +1,69 @@
+@startuml ToDoListMVC_ClassDiagram
+
+package "ToDoListMVC.Models" {
+    class Item {
+        - int ID
+        - string Title
+        - string Description
+        - DateTime Deadline
+        - bool Done
+    }
+}
+
+package "ToDoListMVC.Controllers" {
+    class ItemController {
+        - ITodoRepository todoRepository
+        - Item Item
+        - TodoItemWIthMessageViewModel TodoViewModel
+        + Create(int? itemId): IActionResult
+        + Create(TodoItemWIthMessageViewModel newItem): IActionResult
+        + ConfirmDelete(int itemId): IActionResult
+        + Delete(int itemId): IActionResult
+        + Done(int itemId): IActionResult
+    }
+}
+
+package "ToDo.Repositories" {
+    class TodoRepository {
+        - AppDbContext appDbContext
+        + IEnumerable<Item> AllItems
+        + Add(Item newItem): Item
+        + GetItemById(int id): Item
+        + Remove(int id): Item
+        + Update(Item updatedItem): Item
+        + Commit(): int
+    }
+
+    class DatabaseInitializer {
+        - IServiceProvider serviceProvider
+        + StartAsync(CancellationToken cancellationToken): Task
+        + StopAsync(CancellationToken cancellationToken): Task
+        - InitializeDatabase(AppDbContext context): Task
+    }
+}
+
+package "ToDoListMVC.ViewModels" {
+    class TodoItemWIthMessageViewModel {
+        - Item Item
+        - string Message
+    }
+}
+
+package "ToDoListMVC.Data" {
+    class AppDbContext {
+        - DbSet<Item> Items
+    }
+}
+
+note bottom of ItemController: "Контролер для управління\nелементами списку справ"
+note bottom of TodoRepository: "Репозиторій для роботи з елементами\nсписку справ у базі даних"
+note bottom of AppDbContext: "Контекст бази даних\nдля доступу до даних"
+
+ItemController --> Item
+ItemController --> TodoItemWIthMessageViewModel
+ItemController --> ITodoRepository
+TodoRepository --> AppDbContext
+TodoRepository --> ITodoRepository
+DatabaseInitializer --> AppDbContext
+
+@enduml

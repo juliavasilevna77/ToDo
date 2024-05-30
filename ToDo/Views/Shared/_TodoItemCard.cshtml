@@ -1,0 +1,26 @@
+@model Item
+
+<div class="col-lg-4 col-md-12" style="padding-top: 2%;">
+    <div class="card text-white" style="border-radius: 1rem; background-color: rgba(70, 70, 74, 0.92);">
+        <div class="card-body">
+            <h5 class="card-title">@Model.Title</h5>
+            <p class="card-text">
+                @Model.Description
+            </p>
+            @if (ViewBag.ShowControlls == true)
+            {
+                <partial name="_TodoItemControls" model="Model"/>
+            }
+        </div>
+        <div class="card-footer">
+            @if (Model.Deadline > DateTime.Now)
+            {
+                <span class="text-decoration-underline">Deadline: @Model.Deadline.ToShortDateString()</span>
+            }
+            else
+            {
+                <span class="text-decoration-line-through">Deadline: @Model.Deadline.ToShortDateString()</span>
+            }
+        </div>
+    </div>
+</div>

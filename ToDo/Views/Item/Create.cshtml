@@ -1,0 +1,29 @@
+@model TodoItemWIthMessageViewModel
+
+<h3>Add todo</h3>
+
+<div class="card" style="border-radius: 1rem; background-color: rgba(70, 70, 74, 0.92);">
+    <div class="card-body p-5">
+        <form asp-action="create" method="post">
+            <input type="hidden" asp-for="Message" />
+            <input type="hidden" asp-for="Item.ID" />
+            <input type="hidden" asp-for="Item.Done" />
+            <div class="form-outline form-white">
+                <input asp-for="Item.Title" class="form-control form-control form-control-lg bg-dark"/>
+                <label asp-for="Item.Title" class="form-label"></label>
+                <span asp-validation-for="Item.Title" class="text-danger"></span>
+            </div>
+            <div class="form-outline form-white">
+                <textarea asp-for="Item.Description" rows="4" class="form-control bg-dark" style="margin-top: 1%;"></textarea>
+                <label asp-for="Item.Description" class="form-label"></label>
+                <span asp-validation-for="Item.Description" class="text-danger"></span>
+            </div>
+            <div class="form-outline form-white">
+                <input asp-for="Item.Deadline" type="date" class="form-control bg-dark" style="margin-top: 1%;"/>
+                <label asp-for="Item.Deadline" class="form-label"></label>
+                <span asp-validation-for="Item.Deadline" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary" style="margin-top: 1%">Done!</button>
+        </form>
+    </div>
+</div>
